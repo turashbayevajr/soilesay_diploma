@@ -7,7 +7,6 @@ const SuraqJauap = () => {
     const [questions, setQuestions] = useState([]);
     const [selectedAnswers, setSelectedAnswers] = useState([]);
     const [feedbackMessage, setFeedbackMessage] = useState('');
-    const [setSJLevel] = useState(1);
     const [completedLevels, setCompletedLevels] = useState([]);
     const [currentLevel, setCurrentLevel] = useState(1);
     const [noMoreLevels, setNoMoreLevels] = useState(false);
@@ -16,7 +15,6 @@ const SuraqJauap = () => {
         const fetchUserData = async () => {
             try {
                 const userData = await getUserProfile();
-                setSJLevel(userData.SJlevel);
                 setCurrentLevel(userData.SJlevel);
 
                 const suraqJauapData = await getSuraqJauapByLevel(userData.SJlevel);
@@ -36,7 +34,7 @@ const SuraqJauap = () => {
         };
 
         fetchUserData();
-    }, [setSJLevel]);
+    }, []);
 
     const handleAnswerChange = (questionIndex, optionIndex) => {
         const newSelectedAnswers = [...selectedAnswers];
@@ -59,7 +57,6 @@ const SuraqJauap = () => {
                     setFeedbackMessage('');
                 } else {
                     const nextLevel = response.SJLevel;
-                    setSJLevel(nextLevel);
                     setCurrentLevel(nextLevel);
 
                     const suraqJauapData = await getSuraqJauapByLevel(nextLevel);
@@ -141,22 +138,20 @@ const SuraqJauap = () => {
                         </Alert>
                     )}
                 </div>
-                <div className='levels'>
-                    <div className='levels__inner'>
-                        <h2 className="levels__title">LEVELS</h2>
-                        {completedLevels
-                            .sort((a, b) => a.level - b.level)  // Сортировка уровней по возрастанию
-                            .map(level => (
-                                <Button
-                                    key={level._id}
-                                    className="level__number"
-                                    onClick={() => handleLevelClick(level.level)}
-                                >
-                                    {level.level}
-                                </Button>
-                            ))
-                        }
-                    </div>
+            </div>
+
+            <div className='levels'>
+                <div className='levels__inner'>
+                    <h2 className="levels__title">LEVELS</h2>
+                    {completedLevels.map(level => (
+                        <Button
+                            key={level._id}
+                            className="level__number"
+                            onClick={() => handleLevelClick(level.level)}
+                        >
+                            Level {level.level}
+                        </Button>
+                    ))}
                 </div>
             </div>
         </Container>
