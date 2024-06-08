@@ -45,13 +45,18 @@ router.get("/all", authenticateUser, checkAdmin, async (req, res) => {
 // Update a level (admin)
 router.put("/:id", authenticateUser, checkAdmin, async (req, res) => {
     const { id } = req.params;
-    const { text, analysis, level } = req.body;
+    const { text, analysis } = req.body;
 
     try {
-        const updatedLevel = await Talda.findByIdAndUpdate(id, { text, analysis, level }, { new: true });
-        if (!updatedLevel) {
+        const existingLevel = await Talda.findById(id);
+        if (!existingLevel) {
             return res.status(404).json({ message: "Level not found" });
         }
+
+        existingLevel.text = text;
+        existingLevel.analysis = analysis;
+
+        const updatedLevel = await existingLevel.save();
         res.json(updatedLevel);
     } catch (error) {
         res.status(400).json({ message: "Error updating level" });
@@ -80,6 +85,8 @@ router.delete("/:id", authenticateUser, checkAdmin, async (req, res) => {
         res.status(400).json({ message: "Error deleting level" });
     }
 });
+
+// Get a specific level (admin)
 router.get("/:id", authenticateUser, checkAdmin, async (req, res) => {
     const { id } = req.params;
     try {
@@ -92,6 +99,8 @@ router.get("/:id", authenticateUser, checkAdmin, async (req, res) => {
         res.status(500).json({ message: "Error fetching level" });
     }
 });
+
+// Get completed levels for the current user
 router.get("/completed", authenticateUser, async (req, res) => {
     try {
         const user = req.user;  // Assume user is attached to req in authenticateUser middleware
