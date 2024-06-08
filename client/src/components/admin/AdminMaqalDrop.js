@@ -1,39 +1,68 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { getAllMaqalDrop, deleteMaqalDrop } from './api';
+import { Button, Card, Container, Row, Col } from 'react-bootstrap';
 
-function AdminMaqalDrop({ username }) {
-  const [sentence, setSentence] = useState('');
+const AdminMaqalDrop = () => {
+  const [maqalDrop, setMaqalDrop] = useState([]);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  useEffect(() => {
+    const fetchMaqalDrop = async () => {
+      try {
+        const fetchedMaqalDrop = await getAllMaqalDrop();
+        if (Array.isArray(fetchedMaqalDrop)) {
+          setMaqalDrop(fetchedMaqalDrop);
+        } else if (fetchedMaqalDrop) {
+          setMaqalDrop([fetchedMaqalDrop]);
+        } else {
+          setMaqalDrop([]);
+        }
+      } catch (error) {
+        console.error('Error fetching MaqalDrop:', error);
+        setMaqalDrop([]);
+      }
+    };
+    fetchMaqalDrop();
+  }, []);
+
+  const handleDelete = async (id) => {
     try {
-      const response = await axios.post('http://localhost:8000/api/maqal/add', {
-        username,
-        sentence,
-      });
-      console.log(response.data);
-      alert('News added successfully');
-      setSentence('');
+      await deleteMaqalDrop(id);
+      setMaqalDrop(maqalDrop.filter(level => level._id !== id));
     } catch (error) {
-      console.error('Error:', error.response ? error.response.data : error.message);
-      alert('Error adding news');
+      console.error('Error deleting MaqalDrop:', error);
     }
   };
 
   return (
-    <div className="admin-page">
-      <h1>Welcome, Admin!</h1>
-      <p>You have administrative privileges.</p>
-      <form className="news-form" onSubmit={handleSubmit}>
-        <textarea
-          placeholder="Type your sentence here"
-          value={sentence}
-          onChange={(e) => setSentence(e.target.value)}
-        ></textarea>
-        <button type="submit">Add Level</button>
-      </form>
-    </div>
+      <Container className='admin content__body'>
+        <div className='admin__inner'>
+          <h2 className="admin__title title">ADMIN MAQALDROP</h2>
+          <div className="d-flex justify-content-center mb-4">
+            <Link to="/admin/maqaldrop/add" className="btn btn-primary mb-4">Add Level</Link>
+          </div>
+
+          <Row>
+            {Array.isArray(maqalDrop) && maqalDrop.length > 0 ? (
+                maqalDrop.map(level => (
+                    <Col key={level._id} md={4} className="mb-4">
+                      <Card>
+                        <Card.Body>
+                          <Card.Title>Level {level.level}</Card.Title>
+                          <Card.Text>{level.sentence}</Card.Text>
+                          <Link to={`/admin/maqaldrop/edit/${level._id}`} className="btn btn-secondary mr-2">Edit</Link>
+                          <Button variant="danger" onClick={() => handleDelete(level._id)}>Delete</Button>
+                        </Card.Body>
+                      </Card>
+                    </Col>
+                ))
+            ) : (
+                <p>No MaqalDrop levels found.</p>
+            )}
+          </Row>
+        </div>
+      </Container>
   );
-}
+};
 
 export default AdminMaqalDrop;

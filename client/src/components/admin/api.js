@@ -191,5 +191,56 @@ export const deleteSuraqJauap = async (id) => {
     }
 };
 
+// MaqalDrop API calls
+
+export const getAllMaqalDrop = async () => {
+    try {
+        const response = await api.get('/maqalDrop/all'); // Ensure this endpoint is correct
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching MaqalDrop:', error);
+        throw error;
+    }
+};
+
+export const addMaqalDrop = async (maqalDropData) => {
+    try {
+        const response = await api.post('/maqalDrop', maqalDropData);
+        return response.data;
+    } catch (error) {
+        console.error('Error adding MaqalDrop:', error);
+        throw error;
+    }
+};
+
+export const getMaqalDropById = async (id) => {
+    try {
+        const response = await api.get(`/maqalDrop/${id}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching MaqalDrop by ID:', error);
+        throw error;
+    }
+};
+
+export const editMaqalDrop = async (id, maqalDropData) => {
+    try {
+        const response = await api.put(`/maqalDrop/${id}`, maqalDropData);
+        return response.data;
+    } catch (error) {
+        console.error('Error updating MaqalDrop:', error);
+        throw error;
+    }
+};
+
+export const deleteMaqalDrop = async (id) => {
+    try {
+        const response = await api.delete(`/maqalDrop/${id}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error deleting MaqalDrop:', error);
+        throw error;
+    }
+};
 
 export default api;

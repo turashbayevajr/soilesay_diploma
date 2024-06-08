@@ -1,4 +1,3 @@
-// src/App.js
 import React, { useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Account from "./components/account/Account";
@@ -22,6 +21,8 @@ import AdminTaldaEdit from "./components/admin/AdminTaldaEdit";
 import AdminSJAdd from "./components/admin/AdminSJAdd";
 import AdminSJEdit from "./components/admin/AdminSJEdit";
 import EventForm from './components/home/EventForm';
+import AdminMDAdd from './components/admin/AdminMDAdd';
+import AdminMDEdit from './components/admin/AdminMDEdit';
 import ErrorBoundary from "./components/ErrorBoundary";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "./App.css";
@@ -84,6 +85,8 @@ function App() {
                                             <Route path="/admin/talda/edit/:id" element={<AdminTaldaEdit />} />
                                             <Route path="/admin/sj/add" element={<AdminSJAdd />} />
                                             <Route path="/admin/sj/edit/:id" element={<AdminSJEdit />} />
+                                            <Route path="/admin/maqaldrop/add" element={<AdminMDAdd />} />
+                                            <Route path="/admin/maqaldrop/edit/:id" element={<AdminMDEdit />} />
                                         </>
                                     )}
                                 </Routes>

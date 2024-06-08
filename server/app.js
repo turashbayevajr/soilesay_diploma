@@ -19,7 +19,7 @@ app.use(cors());
 
 app.use("/", registrationRouter);
 app.use("/", userProgressRouter);
-app.use("/api/maqal", maqalDropRouter);
+app.use("/api/maqalDrop", maqalDropRouter);
 app.use("/api/post", newsRouter);
 app.use("/api/profile", profileRouter);
 app.use("/api/talda", taldaRouter);
