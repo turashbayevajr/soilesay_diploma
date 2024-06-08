@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { createEvent } from '../api'; // Adjust the import path as needed
-import { Form, Button, Container, Row, Col, Alert } from 'react-bootstrap';
+import { Form, Button, Container, Alert, Card } from 'react-bootstrap';
 
 const EventForm = () => {
     const [title, setTitle] = useState('');
@@ -33,10 +33,10 @@ const EventForm = () => {
     };
 
     return (
-        <Container className="mt-5">
-            <Row className="justify-content-md-center">
-                <Col md={6}>
-                    <h2>Add Event</h2>
+        <Container className="mt-5 d-flex justify-content-center">
+            <Card className="shadow-sm" style={{ width: '100%', maxWidth: '600px' }}>
+                <Card.Body>
+                    <Card.Title className="mb-4 text-center">Add Event</Card.Title>
                     {message && <Alert variant={message.includes('successfully') ? 'success' : 'danger'}>{message}</Alert>}
                     <Form onSubmit={handleSubmit}>
                         <Form.Group controlId="title" className="mb-3">
@@ -46,6 +46,7 @@ const EventForm = () => {
                                 value={title}
                                 onChange={(e) => setTitle(e.target.value)}
                                 required
+                                placeholder="Enter event title"
                             />
                         </Form.Group>
                         <Form.Group controlId="description" className="mb-3">
@@ -56,6 +57,7 @@ const EventForm = () => {
                                 value={description}
                                 onChange={(e) => setDescription(e.target.value)}
                                 required
+                                placeholder="Enter event description"
                             />
                         </Form.Group>
                         <Form.Group controlId="date" className="mb-3">
@@ -74,14 +76,15 @@ const EventForm = () => {
                                 value={place}
                                 onChange={(e) => setPlace(e.target.value)}
                                 required
+                                placeholder="Enter event place"
                             />
                         </Form.Group>
-                        <Button variant="primary" type="submit">
+                        <Button variant="primary" type="submit" className="w-100">
                             Add Event
                         </Button>
                     </Form>
-                </Col>
-            </Row>
+                </Card.Body>
+            </Card>
         </Container>
     );
 };

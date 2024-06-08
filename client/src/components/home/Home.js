@@ -67,7 +67,7 @@ const Home = () => {
                             {notification.message}
                         </Alert>
                     ))}
-                    <h2>News</h2>
+
                     {posts.map(post => (
                         <Row key={post._id} className="mb-4">
                             <Col>
@@ -81,7 +81,7 @@ const Home = () => {
                             </Col>
                         </Row>
                     ))}
-                    <h2>Approved Events</h2>
+
                     {events.map(event => (
                         <Row key={event._id} className="mb-4">
                             <Col>
